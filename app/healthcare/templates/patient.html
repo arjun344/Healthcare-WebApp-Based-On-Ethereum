@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HealthCare | User SignUp</title>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<style type="text/css">
+
+  body
+  {
+    background-image: url('/static/img/back.jpg');
+  }
+
+  .w3-modal
+  {z-index:3;display:none;padding-top:100px;position:fixed;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgb(0,0,0);background-color:rgba(0,0,0,0.4)}
+
+  .w3-modal-content{margin:auto;background-color:#fff;position:relative;padding:0;outline:0;width:600px}
+  
+  .w3-display-topright{position:absolute;right:0;top:0}
+
+  .disp-box
+  {
+    position:fixed;
+    top: 25%;
+    left: 20%;
+    width:85em;
+    height:40em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    opacity: 99%;
+    border: 15px;
+  }
+
+  .nav
+  {
+    margin-top: 15px;
+    width: 82em;
+  }
+
+  #customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #c0c4c1;}
+
+#customers tr:hover {background-color: #ddd;color: black;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+
+#customerss {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customerss td, #customerss th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customerss tr:nth-child(even){background-color: #c0c4c1;}
+
+#customerss tr:hover {background-color: #ddd;color: black;}
+
+#customerss th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: white;
+  color: black;
+}
+
+.scrollabletextbox2 {
+    max-height:300px;
+    width:1100px;
+    font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+    font-size: 15px;
+    color: black;
+    overflow-y: scroll;
+}
+
+</style>
+
+
+
+<body>
+    <center>
+          <div class="disp-box span3 well">
+            <div>
+
+              <legend id="welcome_name">Name</legend>
+              <button class="btn">Patient</button>
+              <button class="btn btn-success"></button>
+              <button class="btn">Module</button>
+
+            </div>
+
+            
+
+          <div class="span3 nav">
+
+              <button onclick="MedDetails()" class="btn btn-primary">Medical Records</button>
+              <button id="medrecord" class="btn">10</button>
+
+              <button style="margin-left: 110px;" onclick="DocDetails()" class="btn btn-primary">Incare Of Doctor</button>
+              <button id="noofdoctor" class="btn">10</button>
+
+              <button style="margin-left: 110px;" onclick="InsDetails()" class="btn btn-primary">Total Insurer</button>
+              <button id="noofinsurer" class="btn">10</button>
+
+              <button style="margin-left: 110px;" class="btn btn-primary">Identification</button>
+              <button id="uniqueid" class="btn">123456</button>
+
+          </div>
+
+          
+
+          <div class="span3 nav" id="table_container">
+
+              
+
+          </div>
+
+          <div class="span3 nav" id="add_button">
+
+
+          </div>
+
+
+          </div>
+    </center>
+
+
+
+    <div id="id01" class="w3-modal">
+      <div>
+        <span style="background-color: red;" onclick="document.getElementById('id01').style.display='none'"
+          class="btn btn-warning w3-display-topright">&times;</span>
+          <div id="imgprev" class="gallery">
+          
+
+
+          </div>
+      </div>
+    </div>
+
+    <div id="id02" class="w3-modal">
+      <div>
+        <span style="background-color: red;" onclick="document.getElementById('id02').style.display='none'"
+          class="btn btn-warning w3-display-topright">&times;</span>
+          <div id="repview">
+          
+
+
+          </div>
+      </div>
+    </div>
+
+</body>
+
+
+<script type="text/javascript">
+  
+  var patient_logged_id = {{patient_logged_id|safe}};
+  var patient_data = {{patient_data|safe}};
+  var patient_doc_data = {{patient_doc_data|safe}};
+  var patient_insurer_data = {{patient_insurer_data|safe}};
+  var insurer_list = {{insurer_list|safe}};
+  var med_report = {{med_report|safe}};
+  var base_img_data = {{base_img_data|safe}};
+
+  var name = patient_data[0];
+  var docsize = patient_data[3];
+  var inssize = patient_data[4];
+
+  var ele = document.getElementById("welcome_name");
+  ele.innerHTML = '<b style="color:black;font-size:20px;">Welcome '+name+' !</b>';
+
+  var ele = document.getElementById("noofdoctor");
+  ele.innerHTML = docsize;
+
+  var ele = document.getElementById("noofinsurer");
+  ele.innerHTML = inssize;
+
+  var ele = document.getElementById("medrecord");
+  ele.innerHTML = med_report.length;
+
+  MedDetails();
+
+  function getCookie(name) 
+  {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
+  function MedDetails()
+  {
+
+      var ele = document.getElementById("table_container");
+      ele.innerHTML = '<div class="scrollabletextbox2" >\
+                       <h3>Medical Report List</h3>\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Disease Name</th>\
+                        <th title="Field #2">Reports</th>\
+                        <th title="Field #2">Doctor License</th>\
+                        <th title="Field #2">Status</th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+
+      var ele = document.getElementById("sent_table");
+      ele.innerHTML = '';
+      for(var i=0;i<med_report.length;i++)
+      {
+        var content = ele.innerHTML;
+
+        if(med_report[i][4] === "1")
+        {
+            var temp = '  <tr>\
+                        <td align="left">'+med_report[i][1]+'</td>\
+                       <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button><button onclick="UpdateReport('+i+')" class="btn"></button><button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
+                        <td align="left">'+med_report[i][3]+'</td>\
+                        <td align="left"><button class="btn btn-success">Verified</button></td>\
+                      </tr>\
+                      ';
+        }
+        else
+        {
+          var temp = '  <tr>\
+                        <td align="left">'+med_report[i][1]+'</td>\
+                        <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button><button onclick="UpdateReport('+i+')" class="btn"></button><button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
+                        <td align="left">'+med_report[i][3]+'</td>\
+                        <td align="left"><button class="btn btn-primary">Non-Verified</button></td>\
+                      </tr>\
+                      ';
+        }
+
+        content = content+temp;
+        ele.innerHTML = content;
+      }
+
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '<button onclick="AddRecord()" class="btn btn-success">Add Medical Records</button>'
+
+  }
+
+  function AddRecord()
+  {
+
+    var ele = document.getElementById("add_button");
+    ele.innerHTML = ''
+
+    var ele = document.getElementById("table_container");
+    ele.innerHTML = '<div class="scrollabletextbox2" >\
+                       <h3>Add Record</h3>\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Disease Name</th>\
+                        <th title="Field #2">Reports</th>\
+                        <th title="Field #3">Doctor License</th>\
+                         <th title="Field #4"></th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                        <td align="left"><input class="span3" id="disease" placeholder="Disease Name" type="text"> </td>\
+                        <td align="left"><input type="file" multiple id="gallery-photo-add"><button onclick="prev()" class="btn btn-primary">prev</button></td>\
+                        <td align="left"><input id="myInput" onkeyup="Search()" class="span3" id="license" placeholder="Search for doc..." type="text"> </td>\
+                        <td id="add" align="left"><button onclick="Addrec()" class="btn btn-primary">Add</button>\</td>\
+                    </tbody>\
+                  </table>\
+                  </div>';
+
+    var temp = '<div class="scrollabletextbox2" >\
+                       <h3>Doctors List</h3>\
+                    <table id="customerss">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Doctor Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #3">License</th>\
+                        <th title="Field #4">Organization</th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_doc_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+  ele.innerHTML = ele.innerHTML + temp;
+
+  var doc = {{doctor_list|safe}};
+
+  var ele = document.getElementById("sent_doc_table");
+      ele.innerHTML = '';
+      for(var i=0;i<doc.length;i++)
+      {
+        var content = ele.innerHTML;
+        var temp = '  <tr>\
+                        <td align="left">'+doc[i][0]+'</td>\
+                        <td align="left">'+doc[i][1]+'</td>\
+                        <td align="left">'+doc[i][3]+'</td>\
+                        <td align="left">'+doc[i][4]+'</td>\
+                      </tr>\
+                      ';
+
+        content = content+temp;
+        ele.innerHTML = content;
+      }
+
+  }
+
+
+function prev() {
+
+        var ele = document.getElementById('id01');
+        ele.style.display='block';
+        var placeToInsertImagePreview = 'div.gallery';
+        var input = document.getElementById('gallery-photo-add');
+        if (input.files) {
+            var filesAmount = input.files.length;
+            for (i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();  
+                reader.onload = function(event) {
+                    $($.parseHTML('<img>')).attr({'src':event.target.result,'width':'440px','height':'500px','class':'imgGal'}).appendTo('div.gallery');
+                }
+                reader.readAsDataURL(input.files[i]);
+            }
+        }
+
+  }
+
+function ViewReport(id) {
+
+        var ele = document.getElementById('repview');
+        document.getElementById('id02').style.display='block';
+        ele.innerHTML=''
+        for(var i=0;i<base_img_data[id].length;i++)
+        {
+          temp = '<img width="440" height="500" src="'+base_img_data[id][i]+'">'
+          ele.innerHTML =ele.innerHTML + temp
+        }
+  }
+
+// $('#gallery-photo-add').on('change', function() {
+//   console.log("clicked");
+//         prev(this, 'div.gallery');
+//     });
+
+  function Addrec()
+  {
+
+      var disease = document.getElementById("disease").value;
+
+      
+      var images = document.getElementsByClassName('imgGal'); 
+      var srcList = ""
+      for(var i = 0; i < images.length; i++) {
+          srcList = srcList + images[i].src + "***";
+       } 
+
+
+
+
+
+      var license = document.getElementById("myInput").value;
+
+
+      csrftoken = getCookie('csrftoken');
+      $.ajax({
+        method: 'POST',
+        url: 'AddMedicalRecord',
+        data: {'disease':disease,'report':srcList,'license':license,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("add");
+            ele.innerHTML = '<button class="btn btn-warning">Adding...</button>'
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             var ele = document.getElementById("add");
+             ele.innerHTML = '<button class="btn btn-success">Added</button>'
+             Add();
+             
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+  }
+
+  function Search() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("customerss");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+
+  }
+}
+
+  function DocDetails()
+  {
+
+      var ele = document.getElementById("table_container");
+      ele.innerHTML = '<div class="scrollabletextbox2" >\
+                       <h3>Doctors List</h3>\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Doctor Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #2">License</th>\
+                        <th title="Field #2">Organization</th>\
+                        <th title="Field #2">Verified Records</th>\
+                        <th title="Field #2">Unverified Records</th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+
+      var ele = document.getElementById("sent_table");
+      ele.innerHTML = '';
+      for(var i=0;i<docsize;i++)
+      {
+        var content = ele.innerHTML;
+        var temp = '  <tr>\
+                        <td align="left">'+patient_doc_data[i][0]+'</td>\
+                        <td align="left">'+patient_doc_data[i][1]+'</td>\
+                        <td align="left">'+patient_doc_data[i][3]+'</td>\
+                        <td align="left">'+patient_doc_data[i][4]+'</td>\
+                        <td align="left">'+0+'</td>\
+                        <td align="left">'+0+'</td>\
+                      </tr>\
+                      ';
+
+        content = content+temp;
+        ele.innerHTML = content;
+      }
+
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '<button onclick="AddRecord()" class="btn btn-success">Add Medical Records</button>'
+
+  }
+
+  function InsDetails()
+  {
+
+      var ele = document.getElementById("table_container");
+      ele.innerHTML = '<div class="scrollabletextbox2">\
+                       <h3>Subscribed Insurers List</h3>\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Insurer Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #2">License</th>\
+                        <th title="Field #2">Verified Records</th>\
+                        <th title="Field #2">Unverified Records</th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+      var ele = document.getElementById("sent_table");
+      ele.innerHTML = '';
+      for(var i=0;i<inssize;i++)
+      {
+        var content = ele.innerHTML;
+        var temp = '  <tr>\
+                        <td align="left">'+patient_insurer_data[i][0]+'</td>\
+                        <td align="left">'+patient_insurer_data[i][1]+'</td>\
+                        <td align="left">'+patient_insurer_data[i][2]+'</td>\
+                        <td align="left">'+0+'</td>\
+                        <td align="left">'+0+'</td>\
+                      </tr>\
+                      ';
+
+        content = content+temp;
+        ele.innerHTML = content;
+      }
+
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '<button onclick="AddInsurer()" class="btn btn-success">Add Insurer</button>'
+
+
+  }
+
+  function AddInsurer()
+  {
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '';
+
+      var ele = document.getElementById("table_container");
+      ele.innerHTML = '<div class="scrollabletextbox2">\
+                    <input class="span3" id="searchins" placeholder="Search For Insurer" type="text">\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Insurer Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #2">License</th>\
+                        <th title="Field #2"></th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+      var ele = document.getElementById("sent_table");
+      ele.innerHTML = '';
+      for(var i=0;i<insurer_list.length;i++)
+      {
+          var chk = 0;
+
+          for(var k=0;k<patient_insurer_data.length;k++)
+          {
+            if(JSON.stringify(insurer_list[i])==JSON.stringify(patient_insurer_data[k]))
+            {
+
+                chk = 1
+
+            }
+
+          }
+        
+          if(chk === 0)
+          {
+
+              var content = ele.innerHTML;
+              var temp = '  <tr>\
+                              <td align="left">'+insurer_list[i][0]+'</td>\
+                              <td align="left">'+insurer_list[i][1]+'</td>\
+                              <td align="left">'+insurer_list[i][2]+'</td>\
+                              <td id="'+i+'" align="left"><button onclick="AddI('+i+')" class="btn btn-primary">Add</button></td>\
+                            </tr>\
+                            ';
+
+              content = content+temp;
+              ele.innerHTML = content;
+
+          }
+          else
+          {
+              var content = ele.innerHTML;
+              var temp = '  <tr>\
+                              <td align="left">'+insurer_list[i][0]+'</td>\
+                              <td align="left">'+insurer_list[i][1]+'</td>\
+                              <td align="left">'+insurer_list[i][2]+'</td>\
+                              <td id="'+i+'" align="left"><button class="btn btn-success">Added</button></td>\
+                            </tr>\
+                            ';
+
+              content = content+temp;
+              ele.innerHTML = content;
+
+
+          }
+      }
+
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '<button onclick="Add()" class="btn btn-success">Done</button>'
+  }
+
+  function Add()
+  {
+    window.location.replace('{% url 'patient' %}');
+  }
+
+  function AddI(id)
+  {
+
+      csrftoken = getCookie('csrftoken');
+      $.ajax({
+        method: 'POST',
+        url: 'AddinsToUsr',
+        data: {'insid':id,'patid':patient_logged_id,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById(id.toString());
+            ele.innerHTML = '<button class="btn btn-warning">Adding...</button>'
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             var ele = document.getElementById(id.toString());
+             ele.innerHTML = '<button class="btn btn-success">Added</button>'
+             
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+  }
+
+
+
+</script>
+
+
+
+
+
+</html>

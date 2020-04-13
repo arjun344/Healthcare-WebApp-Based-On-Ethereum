@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HealthCare | User SignUp</title>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<style type="text/css">
+
+  body
+  {
+    background-image: url('/static/img/back.jpg');
+  }
+  
+  .login-box
+  {
+    position:fixed;
+    top: 40%;
+    left: 50%;
+    width:25em;
+    max-height:27em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    opacity: 99%;
+    border: 15px;
+  }
+
+</style>
+
+
+
+<body>
+    <center>
+          <div class="login-box span3 well" id="login_dialog">
+            <legend>Who Are You!</legend>
+            <button onclick="PatientSignUpBox()" class="btn btn-success">A Patient</button>
+            <button class="btn"></button>
+            <button onclick="DoctorSignUpBox()" class="btn btn-primary">A Doctor</button>
+            <button class="btn"></button>
+            <button onclick="InsurerSignUpBox()" class="btn btn-warning">The Insurer</button>
+          </div>
+    </center>
+
+</body>
+
+<script type="text/javascript">
+
+  function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+  
+  function PatientSignUpBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Enter Details!</legend>\
+                    <input class="span3" id="name" placeholder="Full name" type="text"> \
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="uniqueid" placeholder="Unique Identification Number" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <input class="span3" id="cnfpassword" placeholder="Confirm Password" type="password"> \
+                    <br>\
+                    <button onclick="PatientSignUp()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="PatientLoginBox()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+  }
+
+  function PatientLoginBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Patient Login!</legend>\
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <br>\
+                    <button onclick="PatientSignUpBox()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="PatientLogin()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+  }
+
+  function PatientLogin()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+     
+      var emailid = document.getElementById("emailid").value;
+      var password = document.getElementById("password").value;
+
+      if(emailid == "" || password == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'LoginUser',
+        data: {'emailid':emailid,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:20px;">*Please Wait...</b>';
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             if(data == "[-1]") {
+
+                var ele = document.getElementById("error");
+                ele.innerHTML = '<b style="color:red;font-size:20px;">*Wrong Email/Pass...</b>';
+
+             }
+             else {
+
+                window.location.replace('{% url 'patient' %}');
+                console.log("Success");
+             }
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+
+  function PatientSignUp()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+
+      var name = document.getElementById("name").value;
+      var emailid = document.getElementById("emailid").value;
+      var uniqueid = document.getElementById("uniqueid").value;
+      var password = document.getElementById("password").value;
+      var cnfpassword = document.getElementById("cnfpassword").value;
+
+      if(name == "" || emailid == "" || uniqueid == "" || password == "" || cnfpassword == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      if (password !== cnfpassword) {
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Passwords Do Not Match</b>'
+          return;
+
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'AddPatient',
+        data: {'name': name,'emailid':emailid,'uniqueid':uniqueid,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:30px;">*Please Wait...</b>';
+
+         },
+
+         complete: function(){
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:green;font-size:30px;">Done...</b>';
+          PatientLoginBox();
+  
+        },
+        success: function (data) {
+             
+             alert(data);
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+  function DoctorSignUpBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Hello Doctor!</legend>\
+                    <input class="span3" id="name" placeholder="Full name" type="text"> \
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="uniqueid" placeholder="Unique Identification Number" type="text">\
+                    <input class="span3" id="licenseid" placeholder="License Number" type="text">\
+                    <input class="span3" id="organisation" placeholder="Organization name" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <input class="span3" id="cnfpassword" placeholder="Confirm Password" type="password"> \
+                    <br>\
+                    <button onclick="DoctorSignUp()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="DoctorLoginBox()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+  }
+
+  function DoctorLoginBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Doctor Login!</legend>\
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <br>\
+                    <button onclick="DoctorSignUpBox()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="DoctorLogin()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+  }
+
+  function DoctorLogin()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+     
+      var emailid = document.getElementById("emailid").value;
+      var password = document.getElementById("password").value;
+
+      if(emailid == "" || password == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'LoginDoctor',
+        data: {'emailid':emailid,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:20px;">*Please Wait...</b>';
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             if(data == "[-1]") {
+
+                var ele = document.getElementById("error");
+                ele.innerHTML = '<b style="color:red;font-size:20px;">*Wrong Email/Pass...</b>';
+
+             }
+             else {
+
+                console.log("Success");
+             }
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+  function DoctorSignUp()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+
+      var name = document.getElementById("name").value;
+      var emailid = document.getElementById("emailid").value;
+      var uniqueid = document.getElementById("uniqueid").value;
+      var licenseid = document.getElementById("licenseid").value;
+      var organization = document.getElementById("organisation").value;
+      var password = document.getElementById("password").value;
+      var cnfpassword = document.getElementById("cnfpassword").value;
+
+      if(name == "" || emailid == "" || uniqueid == "" || licenseid == "" || password == "" || cnfpassword == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      if (password !== cnfpassword) {
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Passwords Do Not Match</b>'
+          return;
+
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'AddDoctor',
+        data: {'name': name,'emailid':emailid,'uniqueid':uniqueid,'licenseid':licenseid,'organization':organization,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:30px;">*Please Wait...</b>';
+
+         },
+
+         complete: function(){
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:green;font-size:30px;">Done...</b>';
+          DoctorLoginBox();
+  
+        },
+        success: function (data) {
+             
+             alert(data);
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+  function InsurerSignUpBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Hello Insurer!</legend>\
+                    <input class="span3" id="name" placeholder="Full name" type="text"> \
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="licenseid" placeholder="License Number" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <input class="span3" id="cnfpassword" placeholder="Confirm Password" type="password"> \
+                    <br>\
+                    <button onclick="InsurerSignUp()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="InsurerLoginBox()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+
+  }
+
+  function InsurerLoginBox()
+  {
+
+    var ele = document.getElementById("login_dialog");
+
+    var temp = '<div class="login-box span3 well">\
+                    <legend id="error">Insurer Login!</legend>\
+                    <input class="span3" id="emailid" placeholder="Email Id" type="text">\
+                    <input class="span3" id="password" placeholder="Password" type="password"> \
+                    <br>\
+                    <button onclick="InsurerSignUpBox()" class="btn btn-primary">Sign up</button>\
+                    <button onclick="InsurerLogin()" class="btn btn-success">Login</button>\
+                </div>';
+
+
+    ele.innerHTML = temp;
+
+  }
+
+  function InsurerLogin()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+
+      var emailid = document.getElementById("emailid").value;
+      var password = document.getElementById("password").value;
+      
+      if(emailid == "" || password == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'LoginInsurer',
+        data: {'emailid':emailid,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:30px;">*Please Wait...</b>';
+
+         },
+
+        success: function (data) {
+             
+             alert(data);
+             if(data == "[-1]") {
+
+                var ele = document.getElementById("error");
+                ele.innerHTML = '<b style="color:red;font-size:20px;">*Wrong Email/Pass...</b>';
+
+             }
+             else {
+
+                console.log("Success");
+             }
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+  function InsurerSignUp()
+  {
+
+      var csrftoken = getCookie('csrftoken');
+
+      var name = document.getElementById("name").value;
+      var emailid = document.getElementById("emailid").value;
+      var licenseid = document.getElementById("licenseid").value;
+      var password = document.getElementById("password").value;
+      var cnfpassword = document.getElementById("cnfpassword").value;
+
+      if(name == "" || emailid == "" || licenseid == "" || password == "" || cnfpassword == "") {
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Fill All The Fields</b>'
+          return;
+      }
+
+      if (password !== cnfpassword) {
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:red;font-size:20px;">*Passwords Do Not Match</b>'
+          return;
+
+      }
+
+      $.ajax({
+        method: 'POST',
+        url: 'AddInsurer',
+        data: {'name': name,'emailid':emailid,'licenseid':licenseid,'password':password,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("error");
+            ele.innerHTML = '<b style="color:green;font-size:30px;">*Please Wait...</b>';
+
+         },
+
+         complete: function(){
+
+          var ele = document.getElementById("error");
+          ele.innerHTML = '<b style="color:green;font-size:30px;">Done...</b>';
+          InsurerLoginBox();
+  
+        },
+        success: function (data) {
+             
+             alert(data);
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+
+  }
+
+</script>
+
+
+
+</html>
