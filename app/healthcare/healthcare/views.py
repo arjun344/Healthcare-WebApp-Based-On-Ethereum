@@ -22,7 +22,7 @@ class HexJsonEncoder(json.JSONEncoder):
 url = "http://127.0.0.1:8543"
 web3 = Web3(Web3.HTTPProvider(url))
 web3.eth.defaultAccount = web3.eth.accounts[0]
-address = web3.toChecksumAddress("0xa9Dda1C8cCda9b6aec35f49B2C1C49607D6f1dce")
+address = web3.toChecksumAddress("0xdE046C688da788513720Cd4a33F25950da647651")
 
 with open('abi/abi.json') as f:
   abi = json.load(f)
