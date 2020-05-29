@@ -47,6 +47,7 @@ contract Linked {
     
     // User profile
     struct User {
+        
         string name;
         string email;
         string uniqueid;
@@ -107,12 +108,19 @@ contract Linked {
         id++;
     }
     
-    function UpdateReport(uint _userid,uint _recordid,string _rep) public
+    function UpdateReport(uint _userid,uint _recordid,string _disease,string _rep,string _doclicense) public
     {
        
         string storage _report =  MedOfUser[_userid][_recordid].reports;
         string memory k = strConcat(_report,_rep,"","","");
-        MedOfUser[_userid][_recordid].reports = k;
+        MedicalRecord memory medical = MedicalRecord(_recordid,_disease,k,_doclicense,"0");
+        MedOfUser[_userid][_recordid] = medical;
+    }
+    
+    function DeleteRecord(uint _userid,uint _recordid) public
+    {
+        delete MedOfUser[_userid][_recordid];
+        UserInfo[_userid].MedicalRecordSize--;
         
     }
     
@@ -138,7 +146,7 @@ contract Linked {
         DoccOfUser[_pat][UserInfo[_pat].DoccOfUserSize] = DoctorInfo[_doc];
         UserInfo[_pat].DoccOfUserSize++;
         
-    }
+    } 
     
      function AddPatToDoc(uint _doc,uint _pat) public {
         
@@ -208,4 +216,5 @@ contract Linked {
    
 
 }
+
 

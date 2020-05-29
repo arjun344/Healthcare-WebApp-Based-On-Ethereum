@@ -117,16 +117,16 @@
           <div class="span3 nav">
 
               <button onclick="MedDetails()" class="btn btn-primary">Medical Records</button>
-              <button id="medrecord" class="btn">10</button>
+              <button id="medrecord" class="btn">NA</button>
 
               <button style="margin-left: 110px;" onclick="DocDetails()" class="btn btn-primary">Incare Of Doctor</button>
-              <button id="noofdoctor" class="btn">10</button>
+              <button id="noofdoctor" class="btn">NA</button>
 
               <button style="margin-left: 110px;" onclick="InsDetails()" class="btn btn-primary">Total Insurer</button>
-              <button id="noofinsurer" class="btn">10</button>
+              <button id="noofinsurer" class="btn">NA</button>
 
               <button style="margin-left: 110px;" class="btn btn-primary">Identification</button>
-              <button id="uniqueid" class="btn">123456</button>
+              <button id="uniqueid" class="btn">NA</button>
 
           </div>
 
@@ -183,12 +183,14 @@
   var patient_doc_data = {{patient_doc_data|safe}};
   var patient_insurer_data = {{patient_insurer_data|safe}};
   var insurer_list = {{insurer_list|safe}};
+  var doctor_list = {{doctor_list|safe}};
   var med_report = {{med_report|safe}};
   var base_img_data = {{base_img_data|safe}};
 
   var name = patient_data[0];
   var docsize = patient_data[3];
   var inssize = patient_data[4];
+  var patient_id = patient_data[2];
 
   var ele = document.getElementById("welcome_name");
   ele.innerHTML = '<b style="color:black;font-size:20px;">Welcome '+name+' !</b>';
@@ -201,6 +203,9 @@
 
   var ele = document.getElementById("medrecord");
   ele.innerHTML = med_report.length;
+
+  var ele = document.getElementById("uniqueid");
+  ele.innerHTML = patient_id;
 
   MedDetails();
 
@@ -252,7 +257,7 @@
         {
             var temp = '  <tr>\
                         <td align="left">'+med_report[i][1]+'</td>\
-                       <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button><button onclick="UpdateReport('+i+')" class="btn"></button><button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
+                       <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button> <button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
                         <td align="left">'+med_report[i][3]+'</td>\
                         <td align="left"><button class="btn btn-success">Verified</button></td>\
                       </tr>\
@@ -262,9 +267,9 @@
         {
           var temp = '  <tr>\
                         <td align="left">'+med_report[i][1]+'</td>\
-                        <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button><button onclick="UpdateReport('+i+')" class="btn"></button><button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
+                        <td style="max-width:100px;" align="left"><button onclick="ViewReport('+i+')" class="btn btn-success">View Reports</button> <button onclick="UpdateReport('+i+')" class="btn btn-primary">Update</button></td>\
                         <td align="left">'+med_report[i][3]+'</td>\
-                        <td align="left"><button class="btn btn-primary">Non-Verified</button></td>\
+                        <td align="left"><button class="btn btn-warning">Not Verified</button> <button class="btn btn-danger" id="delete'+i+'" onclick="DeleteRecord('+i+')" >Delete</button></td>\
                       </tr>\
                       ';
         }
@@ -276,6 +281,147 @@
       var ele = document.getElementById("add_button");
       ele.innerHTML = '<button onclick="AddRecord()" class="btn btn-success">Add Medical Records</button>'
 
+  }
+
+  function UpdateReport(id)
+  {
+    if(med_report[id][4] === "1")
+    {
+      alert("The Records are already Verified ! They can't be modified");
+    }
+    else
+    {
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = ''
+
+    var ele = document.getElementById("table_container");
+    ele.innerHTML = '<div class="scrollabletextbox2" >\
+                       <h3>Update Record</h3>\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Disease Name</th>\
+                        <th title="Field #2">Reports</th>\
+                        <th title="Field #3">Doctor License</th>\
+                         <th title="Field #4"></th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                        <td align="left"><input class="span3" id="disease" value="'+med_report[id][1]+'" placeholder="Disease Name" type="text"> </td>\
+                        <td align="left"><input type="file" multiple id="gallery-photo-add"><button onclick="prev()" class="btn btn-primary">prev</button></td>\
+                        <td align="left"><input id="myInput" value="'+med_report[id][3]+'"  onkeyup="Search()" class="span3" id="license" placeholder="Search for doc..." type="text"> </td>\
+                        <td id="add" align="left"><button onclick="Updaterec('+id+')" class="btn btn-primary">Update</button>\</td>\
+                    </tbody>\
+                  </table>\
+                  </div>';
+
+    var temp = '<div class="scrollabletextbox2" >\
+                       <h3>Doctors List</h3>\
+                    <table id="customerss">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Doctor Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #3">License</th>\
+                        <th title="Field #4">Organization</th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_doc_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+  ele.innerHTML = ele.innerHTML + temp;
+
+  var doc = {{doctor_list|safe}};
+
+  var ele = document.getElementById("sent_doc_table");
+      ele.innerHTML = '';
+      for(var i=0;i<doc.length;i++)
+      {
+        var content = ele.innerHTML;
+        var temp = '  <tr>\
+                        <td align="left">'+doc[i][0]+'</td>\
+                        <td align="left">'+doc[i][1]+'</td>\
+                        <td align="left">'+doc[i][3]+'</td>\
+                        <td align="left">'+doc[i][4]+'</td>\
+                      </tr>\
+                      ';
+
+        content = content+temp;
+        ele.innerHTML = content;
+      }
+    }
+  }
+
+function Updaterec(id)
+  {
+
+      var disease = document.getElementById("disease").value;
+      var images = document.getElementsByClassName('imgGal'); 
+      var srcList = ""
+      for(var i = 0; i < images.length; i++) {
+          srcList = srcList + images[i].src + "***";
+       } 
+
+       console.log(srcList);
+
+      var license = document.getElementById("myInput").value;
+
+      csrftoken = getCookie('csrftoken');
+      $.ajax({
+        method: 'POST',
+        url: 'UpdateMedicalRecord',
+        data: {'repid':id,'disease':disease,'report':srcList,'license':license,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("add");
+            ele.innerHTML = '<button class="btn btn-warning">Updating...</button>'
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             var ele = document.getElementById("add");
+             ele.innerHTML = '<button class="btn btn-success">Updated</button>'
+             Add();
+             
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+
+  }
+
+  function DeleteRecord(id)
+  {
+    csrftoken = getCookie('csrftoken');
+      $.ajax({
+        method: 'POST',
+        url: 'DeleteMedicalRecord',
+        data: {'repid':id,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById("delete"+id);
+            ele.innerHTML = 'Deleting...';
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             var ele = document.getElementById("delete"+id);
+             ele.innerHTML = 'Deleted';
+             Add();
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
   }
 
   function AddRecord()
@@ -349,6 +495,7 @@ function prev() {
 
         var ele = document.getElementById('id01');
         ele.style.display='block';
+        document.getElementById('imgprev').innerHTML = '';
         var placeToInsertImagePreview = 'div.gallery';
         var input = document.getElementById('gallery-photo-add');
         if (input.files) {
@@ -368,7 +515,7 @@ function ViewReport(id) {
 
         var ele = document.getElementById('repview');
         document.getElementById('id02').style.display='block';
-        ele.innerHTML=''
+        ele.innerHTML = '';
         for(var i=0;i<base_img_data[id].length;i++)
         {
           temp = '<img width="440" height="500" src="'+base_img_data[id][i]+'">'
@@ -392,10 +539,6 @@ function ViewReport(id) {
       for(var i = 0; i < images.length; i++) {
           srcList = srcList + images[i].src + "***";
        } 
-
-
-
-
 
       var license = document.getElementById("myInput").value;
 
@@ -491,7 +634,7 @@ function ViewReport(id) {
       }
 
       var ele = document.getElementById("add_button");
-      ele.innerHTML = '<button onclick="AddRecord()" class="btn btn-success">Add Medical Records</button>'
+      ele.innerHTML = '<button onclick="AddDoctor()" class="btn btn-success">Add Doctor</button>'
 
   }
 
@@ -538,6 +681,86 @@ function ViewReport(id) {
       ele.innerHTML = '<button onclick="AddInsurer()" class="btn btn-success">Add Insurer</button>'
 
 
+  }
+
+    function AddDoctor()
+  {
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '';
+
+      var ele = document.getElementById("table_container");
+      ele.innerHTML = '<div class="scrollabletextbox2">\
+                    <input class="span3" id="searchins" placeholder="Search For Doctor" type="text">\
+                    <table id="customers">\
+                    <thead>\
+                      <tr>\
+                        <th title="Field #1">Doctor Name</th>\
+                        <th title="Field #2">Email</th>\
+                        <th title="Field #2">License</th>\
+                        <th title="Field #2">Organization</th>\
+                        <th title="Field #2"></th>\
+                    </tr>\
+                  </thead>\
+                    <tbody id="sent_table">\
+                    </tbody>\
+                  </table>\
+                  </div>'
+
+      var ele = document.getElementById("sent_table");
+      ele.innerHTML = '';
+      for(var i=0;i<doctor_list.length;i++)
+      {
+          var chk = 0;
+
+          for(var k=0;k<patient_doc_data.length;k++)
+          {
+            if(JSON.stringify(doctor_list[i])==JSON.stringify(patient_doc_data[k]))
+            {
+
+                chk = 1
+
+            }
+
+          }
+        
+          if(chk === 0)
+          {
+
+              var content = ele.innerHTML;
+              var temp = '  <tr>\
+                              <td align="left">'+doctor_list[i][0]+'</td>\
+                              <td align="left">'+doctor_list[i][1]+'</td>\
+                              <td align="left">'+doctor_list[i][2]+'</td>\
+                              <td align="left">'+doctor_list[i][3]+'</td>\
+                              <td id="'+i+'" align="left"><button onclick="AddD('+i+')" class="btn btn-primary">Add</button></td>\
+                            </tr>\
+                            ';
+
+              content = content+temp;
+              ele.innerHTML = content;
+
+          }
+          else
+          {
+              var content = ele.innerHTML;
+              var temp = '  <tr>\
+                              <td align="left">'+doctor_list[i][0]+'</td>\
+                              <td align="left">'+doctor_list[i][1]+'</td>\
+                              <td align="left">'+doctor_list[i][2]+'</td>\
+                              <td align="left">'+doctor_list[i][3]+'</td>\
+                              <td id="'+i+'" align="left"><button class="btn btn-success">Added</button></td>\
+                            </tr>\
+                            ';
+
+              content = content+temp;
+              ele.innerHTML = content;
+
+
+          }
+      }
+
+      var ele = document.getElementById("add_button");
+      ele.innerHTML = '<button onclick="Add()" class="btn btn-success">Done</button>'
   }
 
   function AddInsurer()
@@ -630,6 +853,35 @@ function ViewReport(id) {
         method: 'POST',
         url: 'AddinsToUsr',
         data: {'insid':id,'patid':patient_logged_id,"csrfmiddlewaretoken" : csrftoken},
+        beforeSend: function(){
+
+            var ele = document.getElementById(id.toString());
+            ele.innerHTML = '<button class="btn btn-warning">Adding...</button>'
+
+         },
+        success: function (data) {
+             
+             alert(data);
+             var ele = document.getElementById(id.toString());
+             ele.innerHTML = '<button class="btn btn-success">Added</button>'
+             
+            
+        },
+        error: function (data) {
+
+             alert("Encountered an error .. ..");
+        }
+    });
+  }
+
+  function AddD(id)
+  {
+
+      csrftoken = getCookie('csrftoken');
+      $.ajax({
+        method: 'POST',
+        url: 'AdddocToUsr',
+        data: {'docid':id,'patid':patient_logged_id,"csrfmiddlewaretoken" : csrftoken},
         beforeSend: function(){
 
             var ele = document.getElementById(id.toString());

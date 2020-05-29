@@ -22,13 +22,17 @@ class HexJsonEncoder(json.JSONEncoder):
 url = "http://127.0.0.1:8543"
 web3 = Web3(Web3.HTTPProvider(url))
 web3.eth.defaultAccount = web3.eth.accounts[0]
-address = web3.toChecksumAddress("0x644315550908961c8b09b0187117C6BB1Cd1992c")
-abi = json.loads('[{"constant":false,"inputs":[{"name":"_ins","type":"uint256"},{"name":"_usr","type":"uint256"}],"name":"AddUsrToIns","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_pat","type":"uint256"},{"name":"_doc","type":"uint256"}],"name":"AddDocToPat","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"InsurerLoginInfo","outputs":[{"name":"email","type":"string"},{"name":"password","type":"string"},{"name":"UsrOfInsSize","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"InsOfUser","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"license","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"UserLoginInfo","outputs":[{"name":"email","type":"string"},{"name":"password","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_doc","type":"uint256"},{"name":"_pat","type":"uint256"}],"name":"AddPatToDoc","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"PatOfDoc","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"uniqueid","type":"string"},{"name":"DoccOfUserSize","type":"uint256"},{"name":"InsOfUserSize","type":"uint256"},{"name":"MedicalRecordSize","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_email","type":"string"},{"name":"_license","type":"string"},{"name":"_password","type":"string"}],"name":"setInsurerProfile","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_usr","type":"uint256"},{"name":"_ins","type":"uint256"}],"name":"AddInsToUsr","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_userid","type":"uint256"},{"name":"_recordid","type":"uint256"},{"name":"_rep","type":"string"}],"name":"UpdateReport","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"DoctorInfo","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"uniqueid","type":"string"},{"name":"license","type":"string"},{"name":"organization","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getUserCounter","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_email","type":"string"},{"name":"_uniqueid","type":"string"},{"name":"_password","type":"string"}],"name":"setUserProfile","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"MedOfUser","outputs":[{"name":"id","type":"uint256"},{"name":"disease","type":"string"},{"name":"reports","type":"string"},{"name":"doclicense","type":"string"},{"name":"verified","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_userid","type":"uint256"},{"name":"_recordid","type":"uint256"},{"name":"_stats","type":"string"}],"name":"UpdateReportStats","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"InsurerInfo","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"license","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getDoctorCounter","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_user","type":"uint256"},{"name":"_disease","type":"string"},{"name":"_report","type":"string"},{"name":"_doclicense","type":"string"}],"name":"AddMedicalRecord","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"UserInfo","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"uniqueid","type":"string"},{"name":"DoccOfUserSize","type":"uint256"},{"name":"InsOfUserSize","type":"uint256"},{"name":"MedicalRecordSize","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"getInsurerCounter","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"DoccOfUser","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"uniqueid","type":"string"},{"name":"license","type":"string"},{"name":"organization","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"UsrOfIns","outputs":[{"name":"name","type":"string"},{"name":"email","type":"string"},{"name":"uniqueid","type":"string"},{"name":"DoccOfUserSize","type":"uint256"},{"name":"InsOfUserSize","type":"uint256"},{"name":"MedicalRecordSize","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_name","type":"string"},{"name":"_email","type":"string"},{"name":"_uniqueid","type":"string"},{"name":"_license","type":"string"},{"name":"_organisation","type":"string"},{"name":"_password","type":"string"}],"name":"setDoctorProfile","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"DoctorLoginInfo","outputs":[{"name":"email","type":"string"},{"name":"password","type":"string"},{"name":"PatOfDocSize","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]')
-unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",15000)
+address = web3.toChecksumAddress("0xa9Dda1C8cCda9b6aec35f49B2C1C49607D6f1dce")
+
+with open('abi/abi.json') as f:
+  abi = json.load(f)
+
+unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",15000)
 contract = web3.eth.contract(address=address,abi=abi)
 
 
 patient_logged_id = None
+doctor_logged_id = None
 
 
 def index(request):
@@ -44,7 +48,7 @@ def AddPatient(request):
 		uniqueid = request_data['uniqueid']
 		password = request_data['password']
 
-		unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",1500)
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
 
 		if unlocked:
 			temp = contract.functions.setUserProfile(name,emailid,uniqueid,password).transact()
@@ -66,7 +70,7 @@ def AddDoctor(request):
 		organization = request_data['organization']
 		password = request_data['password']
 
-		unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",1500)
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
 
 		if unlocked:
 			temp = contract.functions.setDoctorProfile(name,emailid,uniqueid,licenseid,organization,password).transact()
@@ -86,7 +90,7 @@ def AddInsurer(request):
 		licenseid = request_data['licenseid']
 		password = request_data['password']
 
-		unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",1500)
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
 
 		if unlocked:
 			temp = contract.functions.setInsurerProfile(name,emailid,licenseid,password).transact()
@@ -184,11 +188,15 @@ def patient(request):
 	patient_insurer_data = []
 	rep_size = patient_data[5]
 	med_report = []
-
 	med_img_report_name = []
-
 	doctor_list = []
-	count = contract.functions.getInsurerCounter().call()
+
+	for i in range(ins_size):
+		insurer = contract.functions.InsOfUser(patient_logged_id,i).call()
+		patient_insurer_data.append(insurer)
+
+
+	count = contract.functions.getDoctorCounter().call()
 	for doc in range(count):
 		temp = contract.functions.DoctorInfo(doc).call()
 		doctor_list.append(temp)
@@ -204,7 +212,7 @@ def patient(request):
 	for item in range(rep_size):
 		temp = contract.functions.MedOfUser(patient_logged_id,item).call()
 		temp2 = temp[2].split(",")
-		temp2 = temp2[1:-1]
+		temp2 = temp2[:-1]
 		med_img_report_name.append(temp2)
 
 	insurer_size = contract.functions.getInsurerCounter().call()
@@ -225,6 +233,79 @@ def patient(request):
 
 	return render(request,'patient.html',{'base_img_data':base_img_data,'doctor_list':doctor_list,'med_report':med_report,'patient_logged_id':patient_logged_id,'insurer_list':insurer_list,'patient_data':patient_data,'patient_doc_data':patient_doc_data,'patient_insurer_data':patient_insurer_data})
 
+def doctor(request):
+	csrf_token = get_token(request)
+	global doctor_logged_id
+	doctor_logged_id = 0
+
+	doctor_data = contract.functions.DoctorInfo(doctor_logged_id).call()
+
+	patient_size = contract.functions.DoctorLoginInfo(doctor_logged_id).call()[2]
+
+	doc_patient_data = []
+
+	for i in range(patient_size):
+		patient_data = contract.functions.PatOfDoc(doctor_logged_id,i).call()
+		data,pat_id = getPatId(patient_data[2])
+		temp = [pat_id]
+		data = data + temp
+		med_report = getMedReport(pat_id)
+		data = data + med_report
+		doc_patient_data.append(data)
+
+	non_verified = []
+
+	for patient in doc_patient_data:
+		for report in range(len(patient[7])):
+			if str(patient[7][report][4]) == "0" and str(patient[7][report][3]) == str(doctor_data[3]):
+				temp = []
+				temp.append(patient[7][report])
+				temp.append([patient[8][report]])
+				temp.append(patient[1])
+				temp.append(patient[6])
+
+				non_verified.append(temp)
+
+	return render(request,'doctor.html',{'non_verified':non_verified,'doctor_logged_id':doctor_logged_id,'doctor_data':doctor_data,'doc_patient_data':doc_patient_data})
+
+def getMedReport(pat_id):
+	med_report = []
+	med_img_report_name = []
+
+	rep_size = contract.functions.UserInfo(pat_id).call()[5]
+
+	for item in range(rep_size):
+		temp = contract.functions.MedOfUser(pat_id,item).call()
+		med_report.append(temp)
+
+	for item in range(rep_size):
+		temp = contract.functions.MedOfUser(pat_id,item).call()
+		temp2 = temp[2].split(",")
+		temp2 = temp2[:-1]
+		med_img_report_name.append(temp2)
+
+	base_img_data = []
+
+	for rep in med_img_report_name:
+		temp = []
+		for fname in rep:
+			data = open(fname, "r").read()
+			data = data[2:-1]
+			temp.append(data)
+		base_img_data.append(temp)
+
+	combined = [med_report,base_img_data]
+	return combined
+
+
+def getPatId(uniqueid):
+	user_counter = contract.functions.getUserCounter().call()
+	for i in range(user_counter):
+		user_data = contract.functions.UserInfo(i).call()
+		if uniqueid in user_data:
+			return user_data,i
+	return None,None
+
 def AddinsToUsr(request):
 	csrf_token = get_token(request)
 	if request.is_ajax():
@@ -232,11 +313,32 @@ def AddinsToUsr(request):
 		insid = int(request_data['insid'])
 		patid = int(request_data['patid'])
 
-		unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",1500)
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
 
 		if unlocked:
 			temp = contract.functions.AddInsToUsr(patid,insid).transact()
 			while web3.eth.getTransaction(temp)['blockNumber'] is None:
+				chk = 'do nothing'
+			data = json.dumps(dict(web3.eth.getTransaction(temp)),cls=HexJsonEncoder)
+			return JsonResponse(data, safe=False)
+
+	return render(request,'index.html')
+
+def AdddocToUsr(request):
+	csrf_token = get_token(request)
+	if request.is_ajax():
+		request_data = request.POST
+		docid = int(request_data['docid'])
+		patid = int(request_data['patid'])
+
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
+
+		if unlocked:
+			temp = contract.functions.AddDocToPat(patid,docid).transact()
+			temp2 = contract.functions.AddPatToDoc(docid,patid).transact()
+			while web3.eth.getTransaction(temp)['blockNumber'] is None:
+				chk = 'do nothing'
+			while web3.eth.getTransaction(temp2)['blockNumber'] is None:
 				chk = 'do nothing'
 			data = json.dumps(dict(web3.eth.getTransaction(temp)),cls=HexJsonEncoder)
 			return JsonResponse(data, safe=False)
@@ -253,7 +355,7 @@ def AddMedicalRecord(request):
 		imglst = report.split("***")
 		imglst = imglst[:-1]
 		
-		fileNamelst = ","
+		fileNamelst = ""
 
 		for img in imglst:
 			img = str(img).encode('utf-8')
@@ -265,7 +367,7 @@ def AddMedicalRecord(request):
 				text_file.write(str(img))
 
 		license = request_data['license']
-		unlocked = web3.geth.personal.unlockAccount(web3.eth.coinbase,"1",1500)
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
 
 		if unlocked:
 			temp = contract.functions.AddMedicalRecord(patient_logged_id,disease,fileNamelst,license).transact()
@@ -275,3 +377,75 @@ def AddMedicalRecord(request):
 			return JsonResponse(data, safe=False)
 
 	return render(request,'index.html')
+
+def UpdateMedicalRecord(request):
+	csrf_token = get_token(request)
+	if request.is_ajax():
+		request_data = request.POST
+		rep_id = request_data['repid']
+		disease = request_data['disease']
+		report = request_data['report']
+
+		imglst = report.split("***")
+		imglst = imglst[:-1]
+		
+		fileNamelst = ""
+
+		for img in imglst:
+			img = str(img).encode('utf-8')
+			hashedWord = sha256(img.strip()).hexdigest()
+			imgname = "MedicalRecords/"+str(hashedWord) + str(datetime.datetime.now().timestamp())
+			print(imgname)
+			fileNamelst =fileNamelst+imgname+","
+			with open(imgname, "w") as text_file:
+				text_file.write(str(img))
+
+		license = request_data['license']
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
+
+		if unlocked:
+			temp = contract.functions.UpdateReport(int(patient_logged_id),int(rep_id),disease,fileNamelst,license).transact()
+			while web3.eth.getTransaction(temp)['blockNumber'] is None:
+				chk = 'do nothing'
+			data = json.dumps(dict(web3.eth.getTransaction(temp)),cls=HexJsonEncoder)
+			return JsonResponse(data, safe=False)
+
+	return render(request,'index.html')
+
+
+def UpdateRepStats(request):
+	csrf_token = get_token(request)
+	if request.is_ajax():
+		request_data = request.POST
+		rep_id = request_data['rep_id']
+		pat_id = request_data['pat_id']
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
+
+		if unlocked:
+			temp = contract.functions.UpdateReportStats(int(pat_id),int(rep_id),"1").transact()
+			while web3.eth.getTransaction(temp)['blockNumber'] is None:
+				chk = 'do nothing'
+			data = json.dumps(dict(web3.eth.getTransaction(temp)),cls=HexJsonEncoder)
+			return JsonResponse(data, safe=False)
+
+	return render(request,'doctor.html')
+
+
+
+
+def DeleteMedicalRecord(request):
+	csrf_token = get_token(request)
+	if request.is_ajax():
+		request_data = request.POST
+		rep_id = request_data['repid']
+		unlocked = web3.geth.personal.unlockAccount(web3.geth.personal.listAccounts()[0],"1",1500)
+
+		if unlocked:
+			temp = contract.functions.DeleteRecord(int(patient_logged_id),int(rep_id)).transact()
+			while web3.eth.getTransaction(temp)['blockNumber'] is None:
+				chk = 'do nothing'
+			data = json.dumps(dict(web3.eth.getTransaction(temp)),cls=HexJsonEncoder)
+			return JsonResponse(data, safe=False)
+
+	return render(request,'index.html')
+
